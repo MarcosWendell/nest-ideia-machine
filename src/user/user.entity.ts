@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, Column, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Column,
+  BeforeInsert,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
@@ -22,7 +28,7 @@ export class UserEntity {
   password: string;
 
   @BeforeInsert()
-  async hashPassword(){
+  async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
@@ -41,9 +47,13 @@ export class UserEntity {
 
   private get token() {
     const { id, username } = this;
-    return jwt.sign({
-      id, username,
-    }, process.env.SECRET, {expiresIn: '7d'});
-
+    return jwt.sign(
+      {
+        id,
+        username,
+      },
+      process.env.SECRET,
+      { expiresIn: '7d' },
+    );
   }
 }

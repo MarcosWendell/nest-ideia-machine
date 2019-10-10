@@ -45,7 +45,8 @@ export class ValidationPipe implements PipeTransform {
   private formatErrors(errors: any[]) {
     return errors
       .map(err => {
-        for (const property of err.constraints) {
+        // tslint:disable-next-line: forin
+        for (const property in err.constraints) {
           return err.constraints[property];
         }
       })

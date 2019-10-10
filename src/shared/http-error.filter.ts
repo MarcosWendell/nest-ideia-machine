@@ -19,7 +19,7 @@ export class HttpErrorFilter implements ExceptionFilter {
         timestamp: new Date().toLocaleDateString(),
         path: request.url,
         method: request.method,
-        message: exception.message.error,
+        message: exception.message.message,
     };
 
     Logger.error(`Not able to ${request.method} ${request.url}`, JSON.stringify(errorResponse), 'ExceptionFilter');
