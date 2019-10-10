@@ -10,7 +10,10 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), IdeaModule, UserModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    IdeaModule,
+    UserModule],
   controllers: [AppController],
   providers: [
     AppService,
@@ -21,6 +24,7 @@ import { UserModule } from './user/user.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
-    }],
+    },
+  ],
 })
 export class AppModule {}
