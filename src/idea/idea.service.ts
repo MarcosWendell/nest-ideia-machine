@@ -56,7 +56,7 @@ export class IdeaService {
 
   async showAll(): Promise<IdeaRO[]> {
     const ideas = await this.ideaRepository.find({
-      relations: ['author', 'upvotes', 'downvotes'],
+      relations: ['author', 'upvotes', 'downvotes', 'comments'],
     });
     return ideas.map(idea => this.toResponseObject(idea));
   }
@@ -71,7 +71,7 @@ export class IdeaService {
   async read(id: string): Promise<IdeaRO> {
     const idea = await this.ideaRepository.findOne({
       where: { id },
-      relations: ['author', 'upvotes', 'downvotes'],
+      relations: ['author', 'upvotes', 'downvotes', 'comments'],
     });
 
     if (!idea) {
@@ -97,7 +97,7 @@ export class IdeaService {
     await this.ideaRepository.update({ id }, data);
     idea = await this.ideaRepository.findOne({
       where: { id },
-      relations: ['author'],
+      relations: ['author', 'comments'],
     });
     return this.toResponseObject(idea);
   }
