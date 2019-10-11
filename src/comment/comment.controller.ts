@@ -10,6 +10,7 @@ import {
   UsePipes,
   Body,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentService } from './comment.service';
@@ -21,13 +22,13 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
 
   @Get('idea/:id')
-  showCommentsByIdea(@Param('id') idea: string) {
-    return this.commentService.showByIdea(idea);
+  showCommentsByIdea(@Param('id') idea: string, @Query('page') page: number) {
+    return this.commentService.showByIdea(idea, page);
   }
 
   @Get('user/:id')
-  showCommentsByUser(@Param('id') user: string) {
-    return this.commentService.showByUser(user);
+  showCommentsByUser(@Param('id') user: string, @Query('page') page: number) {
+    return this.commentService.showByUser(user, page);
   }
 
   @Post('idea/:id')
