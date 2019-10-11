@@ -1,3 +1,4 @@
+import { AuthGuard } from './../shared/auth.guard';
 import { CommentService } from './../comment/comment.service';
 import {
   Resolver,
@@ -5,9 +6,12 @@ import {
   Args,
   ResolveProperty,
   Parent,
+  Mutation,
+  Context,
 } from '@nestjs/graphql';
 import { IdeaService } from './idea.service';
-import { Param } from '@nestjs/common';
+import { Param, UseGuards } from '@nestjs/common';
+import { IdeaDTO } from './idea.dto';
 
 @Resolver('Idea')
 export class IdeaResolver {
@@ -19,6 +23,71 @@ export class IdeaResolver {
   @Query()
   ideas(@Args('page') page: number, @Args('newest') newest: boolean) {
     return this.ideaService.showAll(page, newest);
+  }
+
+  @Query()
+  async idea(@Args('id') id: string) {
+    return await this.ideaService.read(id);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async createIdea(
+    @Args('idea') idea: string,
+    @Args('description') description: string,
+    @Context('user') user,
+  ) {
+    const data: IdeaDTO = { idea, description };
+    const { id: userId } = user;
+    return await this.ideaService.create(userId, data);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async updateIdea(
+    @Args('id') id: string,
+    @Args('idea') idea: string,
+    @Args('description') description: string,
+    @Context('user') user,
+  ) {
+    const data: IdeaDTO = { idea, description };
+    const { id: userId } = user;
+    return await this.ideaService.update(id, userId, data);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async deleteIdea(@Args('id') id: string, @Context('user') user) {
+    const { id: userId } = user;
+    return await this.ideaService.remove(id, userId);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async upvote(@Args('id') id: string, @Context('user') user) {
+    const { id: userId } = user;
+    return await this.ideaService.upvote(id, userId);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async downvote(@Args('id') id: string, @Context('user') user) {
+    const { id: userId } = user;
+    return await this.ideaService.downvote(id, userId);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async bookmark(@Args('id') id: string, @Context('user') user) {
+    const { id: userId } = user;
+    return await this.ideaService.bookmark(id, userId);
+  }
+
+  @Mutation()
+  @UseGuards(new AuthGuard())
+  async unbookmark(@Args('id') id: string, @Context('user') user) {
+    const { id: userId } = user;
+    return await this.ideaService.unbookmark(id, userId);
   }
 
   @ResolveProperty()
