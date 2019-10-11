@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IdeaDTO, IdeaRO } from './idea.dto';
 import { IdeaEntity } from './idea.entity';
 import { UserEntity } from './../user/user.entity';
-import { Votes } from 'src/shared/votes.enum';
+import { Votes } from './../shared/votes.enum';
 
 @Injectable()
 export class IdeaService {

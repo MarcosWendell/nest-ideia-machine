@@ -13,25 +13,28 @@ export class HttpErrorFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     const response = ctx.getResponse();
-    const status = exception.getStatus
-      ? exception.getStatus()
-      : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const errorResponse = {
-      code: status,
-      timestamp: new Date().toLocaleDateString(),
-      path: request.url,
-      method: request.method,
-      message:
-        exception.message.message || exception.message || 'Internal Error',
-    };
+    if (request) {
+      const status = exception.getStatus
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    Logger.error(
-      `Not able to ${request.method} ${request.url}`,
-      JSON.stringify(errorResponse),
-      'ExceptionFilter',
-    );
+      const errorResponse = {
+        code: status,
+        timestamp: new Date().toLocaleDateString(),
+        path: request.url,
+        method: request.method,
+        message:
+          exception.message.message || exception.message || 'Internal Error',
+      };
 
-    response.status(404).json(errorResponse);
+      Logger.error(
+        `Not able to ${request.method} ${request.url}`,
+        JSON.stringify(errorResponse),
+        'ExceptionFilter',
+      );
+
+      response.status(404).json(errorResponse);
+    }
   }
 }

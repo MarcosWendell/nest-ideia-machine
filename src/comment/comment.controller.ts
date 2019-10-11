@@ -1,6 +1,3 @@
-import { ValidationPipe } from './../shared/validation.pipe';
-import { AuthGuard } from './../shared/auth.guard';
-import { CommentEntity } from './comment.entity';
 import {
   Controller,
   Get,
@@ -12,10 +9,12 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+
 import { CommentService } from './comment.service';
 import { CommentDTO } from './comment.dto';
-import { User } from 'src/user/user.decorator';
+import { User } from './../user/user.decorator';
+import { AuthGuard } from './../shared/auth.guard';
+import { ValidationPipe } from './../shared/validation.pipe';
 
 @Controller('comment')
 export class CommentController {

@@ -1,0 +1,32 @@
+type User {
+  id: ID!
+  username: String!
+  created: String!
+  bookmarks: [Idea!]
+  ideas: [Idea!]
+  comments: [Comment!]
+}
+
+type Auth {
+  token: String!
+  username: String!
+}
+
+type Query {
+  users(page: Int): [User!]
+  user(username: String!): User
+  whoami: User
+}
+
+type Mutation {
+  login(username: String!, password: String!): Auth!
+  register(username: String!, password: String!): Auth!
+}
+
+# export class UserRO {
+#   id: string;
+#   username: string;
+#   created: Date;
+#   token?: string;
+#   bookmarks?: IdeaEntity[];
+# }
